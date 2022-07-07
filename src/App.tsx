@@ -1,25 +1,12 @@
-import { useState } from "react";
 import {
   useAdaptivity,
   AppRoot,
   SplitLayout,
   SplitCol,
   ViewWidth,
-  View,
-  Panel,
   PanelHeader,
-  Header,
-  Group,
-  SimpleCell,
-  FormItem,
-  Checkbox,
-  usePlatform,
-  Separator,
-  Cell,
-  Avatar,
-  Placeholder,
-  Button,
 } from "@vkontakte/vkui";
+import './index.css'
 import "@vkontakte/vkui/dist/vkui.css";
 import GenreFilterPanel from "./panels/GenreFilterPanel";
 import MainPanel from "./panels/Main";

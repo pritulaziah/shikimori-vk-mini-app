@@ -7,10 +7,22 @@ import {
   Link,
   Caption,
   Text,
+  Button,
+  Div,
+  PanelSpinner,
 } from "@vkontakte/vkui";
-import { Icon24ExternalLinkOutline } from '@vkontakte/icons'
+import {
+  Icon24ExternalLinkOutline,
+  Icon24ArrowRightOutline,
+} from "@vkontakte/icons";
 import { useQuery } from "react-query";
 import queryFn from "../utils/queryFn";
+
+enum Statuses {
+  Anons = "anons",
+  Ongoing = "ongoing",
+  Released = "released",
+}
 
 enum AnimeKinds {
   TV = "tv",
@@ -23,34 +35,6 @@ enum AnimeKinds {
   TV24 = "tv_24",
   TV48 = "tv_48",
 }
-
-type ExistAnimeKinds = Exclude<
-  AnimeKinds,
-  AnimeKinds.MUSIC | AnimeKinds.TV13 | AnimeKinds.TV24 | AnimeKinds.TV48
->;
-
-const animeKindsDict: {
-  [key in ExistAnimeKinds]: string;
-} = {
-  tv: "TV Сериал",
-  movie: "Фильм",
-  ova: "OVA",
-  ona: "ONA",
-  special: "Спешл",
-};
-
-const getKindText = (kind: AnimeKinds) => {
-  if (["tv", "tv_13", "tv_24", "tv_48"].includes(kind)) {
-    return animeKindsDict.tv;
-  } else if (Object.keys(animeKindsDict).includes(kind)) {
-    return animeKindsDict[kind as ExistAnimeKinds];
-  } else {
-    return null;
-  }
-};
-
-const getYearText = (released_on: string | null) =>
-  released_on ? released_on.split("-")[0] : "";
 
 interface Anime {
   aired_on: string;
@@ -68,69 +52,165 @@ interface Anime {
   released_on: string | null;
   russian: string;
   score: string;
-  status: string;
+  status: Statuses;
   url: string;
 }
 
+const shikimoriBaseUrl = "https://shikimori.one";
+
+const animeKindsDict = {
+  [AnimeKinds.TV]: "TV Сериал",
+  [AnimeKinds.MOVIE]: "Фильм",
+  [AnimeKinds.OVA]: "OVA",
+  [AnimeKinds.ONA]: "ONA",
+  [AnimeKinds.SPECIAL]: "Спешл",
+};
+
+const animeStatusesDict = {
+  [Statuses.Released]: "Вышел",
+  [Statuses.Ongoing]: "Сейчас выходит",
+  [Statuses.Anons]: "Анонсировано",
+};
+
+const getKindText = (kind: AnimeKinds) => {
+  if (["tv", "tv_13", "tv_24", "tv_48"].includes(kind)) {
+    return animeKindsDict.tv;
+  } else if (Object.keys(animeKindsDict).includes(kind)) {
+    return animeKindsDict[
+      kind as Exclude<
+        AnimeKinds,
+        AnimeKinds.MUSIC | AnimeKinds.TV13 | AnimeKinds.TV24 | AnimeKinds.TV48
+      >
+    ];
+  } else {
+    return null;
+  }
+};
+
+const getYearText = (airedOn: Anime["aired_on"]) =>
+  airedOn ? airedOn.split("-")[0] : "";
+
+const getScoreText = (score: Anime["score"]) =>
+  score === "0.0" ? "Без оценки" : score;
+
+const getStatusText = (status: Anime["status"]) => animeStatusesDict[status];
+
+const getEpisodesText = (
+  episodes: Anime["episodes"],
+  episodesAired: Anime["episodes_aired"],
+  status: Anime["status"]
+) => {
+  if (status === Statuses.Released) {
+    return episodes;
+  } else if (Statuses.Ongoing) {
+    return `${episodes}/${episodesAired || "?"}`;
+  } else {
+    return "Неизвестно";
+  }
+};
+
 const MainPanel = () => {
-  const { isLoading, error, data } = useQuery<Anime[]>(
+  const { isLoading, error, data, refetch } = useQuery<Anime[]>(
     ["animes"],
     queryFn("animes", {
       censored: false,
       order: "random",
       kind: "tv",
       limit: 1,
+      score: 1.0,
     })
   );
 
-  const [anime] = data || ([{ image: {} }] as Anime[]);
+  const [anime] = data || [];
 
   return (
     <Panel>
       <PanelHeader>Твоё случайное аниме</PanelHeader>
-      <Group style={{ alignItems: 'center' }}>
-        <Card className="vkuiContentCard">
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <img
-              className="ContentCard__img"
-              src={`https://shikimori.one${anime.image.original}`}
-              style={{ height: 350, maxWidth: '100%' }}
-            />
-          </div>
-          <div className="vkuiContentCard__body">
-            {/* @ts-ignore */}
-            <Headline className="vkuiContentCard__text" weight="2" level="1">
-              {anime.russian}
-            </Headline>
-            <Caption className="vkuiContentCard__text vkuiContentCard__subtitle"
-              weight="1"
-              level="3"
-              caps
+      {isLoading ? (
+        <PanelSpinner />
+      ) : anime ? (
+        <Group style={{ alignItems: "center" }}>
+          <Card className="vkuiContentCard">
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <img
+                className="ContentCard__img"
+                src={`${shikimoriBaseUrl}${anime.image.original}`}
+                style={{ maxWidth: "100%", height: 300 }}
+              />
+            </div>
+            <div
+              className="vkuiContentCard__body"
+              style={{ display: "flex", flexDirection: "column" }}
             >
-              <Link href="https://google.com" target="_blank">
-                Подробнее на shikimori <Icon24ExternalLinkOutline width={16} height={16} />
-              </Link>
-            </Caption>
-            {anime.score !== "0.0" && (
-              <Text className="vkuiContentCard__text" weight="medium" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>Рейтинг:</span>
-                <span>{anime.score}</span>
+              {/* @ts-ignore */}
+              <Headline className="vkuiContentCard__text" weight="2" level="1">
+                {anime.russian}
+              </Headline>
+              <Text
+                className="vkuiContentCard__text"
+                weight="medium"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <span style={{ color: "var(--text_subhead)" }}>Статус:</span>
+                <span>{getStatusText(anime.status)}</span>
               </Text>
-            )}
-            <Text className="vkuiContentCard__text" weight="medium" style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span>Эпизодов:</span>
-              <span>{anime.episodes}</span>
-            </Text>
-            <Caption
-              className="vkuiContentCard__text vkuiContentCard__caption"
-              style={{ display: "flex", justifyContent: "space-between" }}
+              <Text
+                className="vkuiContentCard__text"
+                weight="medium"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <span style={{ color: "var(--text_subhead)" }}>Рейтинг:</span>
+                <span>{getScoreText(anime.score)}</span>
+              </Text>
+              <Text
+                className="vkuiContentCard__text"
+                weight="medium"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <span style={{ color: "var(--text_subhead)" }}>Эпизодов:</span>
+                <span>
+                  {getEpisodesText(
+                    anime.episodes,
+                    anime.episodes_aired,
+                    anime.status
+                  )}
+                </span>
+              </Text>
+              <Caption
+                className="vkuiContentCard__text vkuiContentCard__caption"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <span>{getKindText(anime.kind)}</span>
+                <span>{getYearText(anime.aired_on)}</span>
+              </Caption>
+              <Caption
+                className="vkuiContentCard__text vkuiContentCard__subtitle"
+                weight="1"
+                level="3"
+                caps
+                style={{ display: "flex", justifyContent: "end" }}
+              >
+                <Link href={`${shikimoriBaseUrl}${anime.url}`} target="_blank">
+                  Подробнее на shikimori{" "}
+                  <Icon24ExternalLinkOutline width={16} height={16} />
+                </Link>
+              </Caption>
+            </div>
+          </Card>
+          <Div>
+            <Button
+              after={<Icon24ArrowRightOutline />}
+              appearance="accent"
+              stretched
+              mode="primary"
+              size="l"
+              onClick={() => refetch()}
             >
-              <span>{getKindText(anime.kind)}</span>
-              <span>{getYearText(anime.released_on)}</span>
-            </Caption>
-          </div>
-        </Card>
-      </Group>
+              Следующее
+            </Button>
+          </Div>
+        </Group>
+      ) : null}
     </Panel>
   );
 };
