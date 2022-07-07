@@ -8,7 +8,7 @@ import {
 } from "@vkontakte/vkui";
 import './index.css'
 import "@vkontakte/vkui/dist/vkui.css";
-import GenreFilterPanel from "./panels/GenreFilterPanel";
+import FilterPanel from "./panels/FilterPanel";
 import MainPanel from "./panels/Main";
 
 const App = () => {
@@ -22,7 +22,7 @@ const App = () => {
         header={<PanelHeader separator={false} />}
       >
         <SplitCol width={280} maxWidth={280}>
-          <GenreFilterPanel />
+          <FilterPanel />
         </SplitCol>
         <SplitCol
           spaced={isDesktop}
