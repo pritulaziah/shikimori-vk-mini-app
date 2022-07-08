@@ -4,8 +4,9 @@ import App from "./App";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AdaptivityProvider, ConfigProvider } from "@vkontakte/vkui";
 import axios from "axios";
+import shikimoriBaseUrl from './constants/shikimoriBaseUrl'
 
-axios.defaults.baseURL = 'https://shikimori.one/api/';
+axios.defaults.baseURL = `${shikimoriBaseUrl}/api/`;
 
 bridge.send("VKWebAppInit");
 

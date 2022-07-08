@@ -17,24 +17,9 @@ import {
 } from "@vkontakte/icons";
 import { useQuery } from "react-query";
 import queryFn from "../utils/queryFn";
-
-enum Statuses {
-  Anons = "anons",
-  Ongoing = "ongoing",
-  Released = "released",
-}
-
-enum AnimeKinds {
-  TV = "tv",
-  MOVIE = "movie",
-  OVA = "ova",
-  ONA = "ona",
-  SPECIAL = "special",
-  MUSIC = "music",
-  TV13 = "tv_13",
-  TV24 = "tv_24",
-  TV48 = "tv_48",
-}
+import { AnimeStatuses, AnimeKinds } from "../types/anime";
+import { animeStatuses } from "../constants/animeDicts";
+import shikimoriBaseUrl from "../constants/shikimoriBaseUrl";
 
 interface Anime {
   aired_on: string;
@@ -52,11 +37,9 @@ interface Anime {
   released_on: string | null;
   russian: string;
   score: string;
-  status: Statuses;
+  status: AnimeStatuses;
   url: string;
 }
-
-const shikimoriBaseUrl = "https://shikimori.one";
 
 const animeKindsDict = {
   [AnimeKinds.TV]: "TV Сериал",
@@ -64,12 +47,6 @@ const animeKindsDict = {
   [AnimeKinds.OVA]: "OVA",
   [AnimeKinds.ONA]: "ONA",
   [AnimeKinds.SPECIAL]: "Спешл",
-};
-
-const animeStatusesDict = {
-  [Statuses.Released]: "Вышел",
-  [Statuses.Ongoing]: "Сейчас выходит",
-  [Statuses.Anons]: "Анонсировано",
 };
 
 const getKindText = (kind: AnimeKinds) => {
@@ -93,16 +70,16 @@ const getYearText = (airedOn: Anime["aired_on"]) =>
 const getScoreText = (score: Anime["score"]) =>
   score === "0.0" ? "Без оценки" : score;
 
-const getStatusText = (status: Anime["status"]) => animeStatusesDict[status];
+const getStatusText = (status: Anime["status"]) => animeStatuses[status];
 
 const getEpisodesText = (
   episodes: Anime["episodes"],
   episodesAired: Anime["episodes_aired"],
   status: Anime["status"]
 ) => {
-  if (status === Statuses.Released) {
+  if (status === AnimeStatuses.Released) {
     return episodes;
-  } else if (Statuses.Ongoing) {
+  } else if (AnimeStatuses.Ongoing) {
     return `${episodes}/${episodesAired || "?"}`;
   } else {
     return "Неизвестно";
