@@ -12,6 +12,7 @@ export const animeStatuses = {
   [AnimeStatuses.Released]: "Вышел",
   [AnimeStatuses.Ongoing]: "Сейчас выходит",
   [AnimeStatuses.Anons]: "Анонсировано",
+  [AnimeStatuses.Latest]: 'Недавно вышедшее'
 };
 
 const animeAgeRatingsKeys = Object.keys(AnimeAgeRatings)

@@ -20,6 +20,7 @@ import queryFn from "../utils/queryFn";
 import { AnimeStatuses, AnimeKinds } from "../types/anime";
 import { animeStatuses } from "../constants/animeDicts";
 import shikimoriBaseUrl from "../constants/shikimoriBaseUrl";
+import useAnimeFilterParams from "../hooks/useAnimeFilterParams";
 
 interface Anime {
   aired_on: string;
@@ -80,21 +81,28 @@ const getEpisodesText = (
   if (status === AnimeStatuses.Released) {
     return episodes;
   } else if (AnimeStatuses.Ongoing) {
-    return `${episodes}/${episodesAired || "?"}`;
+    return `${episodesAired}/${episodes || "?"}`;
   } else {
     return "Неизвестно";
   }
 };
 
-const MainPanel = () => {
-  const { isLoading, error, data, refetch } = useQuery<Anime[]>(
-    ["animes"],
+const paramToString = (param: string[], defaultValue?: string | null) => {
+  return param.length > 0 ? param.join(",") : defaultValue;
+};
+
+const AnimePanel = () => {
+  const { params } = useAnimeFilterParams();
+  const { isLoading, data, refetch } = useQuery<Anime[]>(
+    ["animes", params],
     queryFn("animes", {
       censored: false,
       order: "random",
-      kind: "tv",
       limit: 1,
-      score: 1.0,
+      status: paramToString(params.status),
+      kind: paramToString(params.kind, "tv,movie,ova,ona,special"),
+      rating: paramToString(params.rating),
+      genre: paramToString(params.genre),
     })
   );
 
@@ -139,20 +147,25 @@ const MainPanel = () => {
                 <span style={{ color: "var(--text_subhead)" }}>Рейтинг:</span>
                 <span>{getScoreText(anime.score)}</span>
               </Text>
-              <Text
-                className="vkuiContentCard__text"
-                weight="medium"
-                style={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <span style={{ color: "var(--text_subhead)" }}>Эпизодов:</span>
-                <span>
-                  {getEpisodesText(
-                    anime.episodes,
-                    anime.episodes_aired,
-                    anime.status
-                  )}
-                </span>
-              </Text>
+              {(anime.kind !== AnimeKinds.MOVIE &&
+                anime.status !== AnimeStatuses.Anons) && (
+                <Text
+                  className="vkuiContentCard__text"
+                  weight="medium"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <span style={{ color: "var(--text_subhead)" }}>
+                    Эпизодов:
+                  </span>
+                  <span>
+                    {getEpisodesText(
+                      anime.episodes,
+                      anime.episodes_aired,
+                      anime.status
+                    )}
+                  </span>
+                </Text>
+              )}
               <Caption
                 className="vkuiContentCard__text vkuiContentCard__caption"
                 style={{ display: "flex", justifyContent: "space-between" }}
@@ -192,4 +205,4 @@ const MainPanel = () => {
   );
 };
 
-export default MainPanel;
+export default AnimePanel;

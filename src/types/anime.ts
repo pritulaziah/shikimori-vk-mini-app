@@ -2,6 +2,7 @@ export enum AnimeStatuses {
   Anons = "anons",
   Ongoing = "ongoing",
   Released = "released",
+  Latest = 'latest',
 }
 
 export enum AnimeKinds {

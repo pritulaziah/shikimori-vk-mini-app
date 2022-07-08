@@ -6,10 +6,11 @@ import {
   ViewWidth,
   PanelHeader,
 } from "@vkontakte/vkui";
-import './index.css'
+import "./index.css";
 import "@vkontakte/vkui/dist/vkui.css";
-import FilterPanel from "./panels/FilterPanel";
-import MainPanel from "./panels/Main";
+import FiltersPanel from "./panels/FiltersPanel";
+import AnimePanel from "./panels/AnimePanel";
+import AnimeFiltersProvider from "./providers/AnimeFiltersProvider";
 
 const App = () => {
   const { viewWidth } = useAdaptivity();
@@ -17,21 +18,24 @@ const App = () => {
 
   return (
     <AppRoot>
-      <SplitLayout
-        style={{ justifyContent: "center" }}
-        header={<PanelHeader separator={false} />}
-      >
-        <SplitCol width={280} maxWidth={280}>
-          <FilterPanel />
-        </SplitCol>
-        <SplitCol
-          spaced={isDesktop}
-          width={isDesktop ? "380px" : "100%"}
-          maxWidth={isDesktop ? "380px" : "100%"}
+      <AnimeFiltersProvider>
+        <SplitLayout
+          style={{ justifyContent: "center" }}
+          header={<PanelHeader separator={false} />}
         >
-          <MainPanel />
-        </SplitCol>
-      </SplitLayout>
+          <SplitCol width={280} maxWidth={280}>
+            <FiltersPanel />
+          </SplitCol>
+          <SplitCol
+            spaced={isDesktop}
+            width={isDesktop ? "380px" : "100%"}
+            maxWidth={isDesktop ? "380px" : "100%"}
+            fixed
+          >
+            <AnimePanel />
+          </SplitCol>
+        </SplitLayout>
+      </AnimeFiltersProvider>
     </AppRoot>
   );
 };

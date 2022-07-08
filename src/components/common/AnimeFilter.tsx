@@ -1,19 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox, SimpleCell, IconButton, Counter } from "@vkontakte/vkui";
 import {
   Icon28ChevronUpOutline,
   Icon28ChevronDownOutline,
 } from "@vkontakte/icons";
+import useAnimeFilterParams from "../../hooks/useAnimeFilterParams";
+import { Params } from "../../types/filterParams";
 
 interface IProps {
-  filterName: string;
+  paramName: keyof Params;
+  title: string;
   collection: { [key: string]: string };
   children?: React.ReactNode;
 }
 
-const AnimeFilter = ({ filterName, collection, children }: IProps) => {
+const AnimeFilter = ({ paramName, title, collection, children }: IProps) => {
   const [expanded, setExpanded] = useState(true);
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const { onChangeParams } = useAnimeFilterParams();
 
   const onChangeSelected = (event: React.ChangeEvent<HTMLElement>) => {
     const id = event.currentTarget.id;
@@ -32,6 +36,10 @@ const AnimeFilter = ({ filterName, collection, children }: IProps) => {
     });
   };
 
+  useEffect(() => {
+    onChangeParams(paramName, [...selected])
+  }, [selected])
+
   const onChangeExpand = () => setExpanded((prevState) => !prevState);
 
   return (
@@ -49,7 +57,7 @@ const AnimeFilter = ({ filterName, collection, children }: IProps) => {
         }
       >
         <span style={{ display: "flex", alignItems: "center" }}>
-          {filterName}
+          {title}
           {selected.size > 0 && (
             <Counter mode="secondary" size="s" style={{ marginLeft: "4px" }}>
               {selected.size}
@@ -60,20 +68,18 @@ const AnimeFilter = ({ filterName, collection, children }: IProps) => {
       {expanded && (
         <>
           {children}
-          <div>
-            {Object.entries(collection).map(
-              ([animeStatusKey, animeStatusValue]) => (
-                <Checkbox
-                  key={animeStatusKey}
-                  id={String(animeStatusKey)}
-                  checked={selected.has(animeStatusKey)}
-                  onChange={onChangeSelected}
-                >
-                  {animeStatusValue}
-                </Checkbox>
-              )
-            )}
-          </div>
+          {Object.entries(collection).map(
+            ([animeStatusKey, animeStatusValue]) => (
+              <Checkbox
+                key={animeStatusKey}
+                id={String(animeStatusKey)}
+                checked={selected.has(animeStatusKey)}
+                onChange={onChangeSelected}
+              >
+                {animeStatusValue}
+              </Checkbox>
+            )
+          )}
         </>
       )}
     </>

@@ -43,7 +43,7 @@ const GenreFilter = () => {
   };
 
   return (
-    <AnimeFilter filterName="Жанр" collection={animeGenres}>
+    <AnimeFilter title="Жанр" paramName="genre" collection={animeGenres}>
       <Search onChange={onChangeSearch} value={search} />
     </AnimeFilter>
   );

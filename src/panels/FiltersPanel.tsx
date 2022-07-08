@@ -3,18 +3,18 @@ import AnimeFilter from "../components/common/AnimeFilter";
 import GenreFilter from "../components/GenreFilter";
 import { animeStatuses, animeKinds, animeAgeRatings } from "../constants/animeDicts";
 
-const FilterPanel = () => {
+const FiltersPanel = () => {
   return (
     <Panel>
       <PanelHeader />
       <Group>
-        <AnimeFilter filterName="Тип" collection={animeKinds} />
-        <AnimeFilter filterName="Статус" collection={animeStatuses} />
-        <AnimeFilter filterName="Рейтинг" collection={animeAgeRatings} />
+        <AnimeFilter title="Тип" paramName="kind" collection={animeKinds} />
+        <AnimeFilter title="Статус" paramName="status" collection={animeStatuses} />
+        <AnimeFilter title="Рейтинг" paramName="rating" collection={animeAgeRatings} />
         <GenreFilter />
       </Group>
     </Panel>
   );
 };
 
-export default FilterPanel;
+export default FiltersPanel;
