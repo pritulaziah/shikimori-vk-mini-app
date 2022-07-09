@@ -1,9 +1,7 @@
 import {
-  useAdaptivity,
   AppRoot,
   SplitLayout,
   SplitCol,
-  ViewWidth,
   PanelHeader,
 } from "@vkontakte/vkui";
 import "./index.css";
@@ -13,9 +11,6 @@ import AnimePanel from "./panels/AnimePanel";
 import AnimeFiltersProvider from "./providers/AnimeFiltersProvider";
 
 const App = () => {
-  const { viewWidth } = useAdaptivity();
-  const isDesktop = viewWidth >= ViewWidth.TABLET;
-
   return (
     <AppRoot>
       <AnimeFiltersProvider>
@@ -23,15 +18,10 @@ const App = () => {
           style={{ justifyContent: "center" }}
           header={<PanelHeader separator={false} />}
         >
-          <SplitCol width={280} maxWidth={280}>
+          <SplitCol width={240} maxWidth={240}>
             <FiltersPanel />
           </SplitCol>
-          <SplitCol
-            spaced={isDesktop}
-            width={isDesktop ? "380px" : "100%"}
-            maxWidth={isDesktop ? "380px" : "100%"}
-            fixed
-          >
+          <SplitCol animate spaced width={"380px"} maxWidth={"380px"} fixed>
             <AnimePanel />
           </SplitCol>
         </SplitLayout>

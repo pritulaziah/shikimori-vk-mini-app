@@ -10,10 +10,12 @@ import {
   Button,
   Div,
   PanelSpinner,
+  Placeholder,
 } from "@vkontakte/vkui";
 import {
   Icon24ExternalLinkOutline,
   Icon24ArrowRightOutline,
+  Icon24ErrorCircleOutline,
 } from "@vkontakte/icons";
 import { useQuery } from "react-query";
 import queryFn from "../utils/queryFn";
@@ -103,7 +105,10 @@ const AnimePanel = () => {
       kind: paramToString(params.kind, "tv,movie,ova,ona,special"),
       rating: paramToString(params.rating),
       genre: paramToString(params.genre),
-    })
+    }),
+    {
+      refetchOnWindowFocus: false,
+    }
   );
 
   const [anime] = data || [];
@@ -113,94 +118,112 @@ const AnimePanel = () => {
       <PanelHeader>Твоё случайное аниме</PanelHeader>
       {isLoading ? (
         <PanelSpinner />
-      ) : anime ? (
+      ) : (
         <Group style={{ alignItems: "center" }}>
-          <Card className="vkuiContentCard">
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <img
-                className="ContentCard__img"
-                src={`${shikimoriBaseUrl}${anime.image.original}`}
-                style={{ maxWidth: "100%", height: 300 }}
-              />
-            </div>
-            <div
-              className="vkuiContentCard__body"
-              style={{ display: "flex", flexDirection: "column" }}
-            >
-              {/* @ts-ignore */}
-              <Headline className="vkuiContentCard__text" weight="2" level="1">
-                {anime.russian}
-              </Headline>
-              <Text
-                className="vkuiContentCard__text"
-                weight="medium"
-                style={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <span style={{ color: "var(--text_subhead)" }}>Статус:</span>
-                <span>{getStatusText(anime.status)}</span>
-              </Text>
-              <Text
-                className="vkuiContentCard__text"
-                weight="medium"
-                style={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <span style={{ color: "var(--text_subhead)" }}>Рейтинг:</span>
-                <span>{getScoreText(anime.score)}</span>
-              </Text>
-              {(anime.kind !== AnimeKinds.MOVIE &&
-                anime.status !== AnimeStatuses.Anons) && (
-                <Text
-                  className="vkuiContentCard__text"
-                  weight="medium"
-                  style={{ display: "flex", justifyContent: "space-between" }}
+          {anime ? (
+            <>
+              <Card className="vkuiContentCard">
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <img
+                    className="ContentCard__img"
+                    src={`${shikimoriBaseUrl}${anime.image.original}`}
+                    style={{ maxWidth: "100%", height: 300 }}
+                  />
+                </div>
+                <div
+                  className="vkuiContentCard__body"
+                  style={{ display: "flex", flexDirection: "column" }}
                 >
-                  <span style={{ color: "var(--text_subhead)" }}>
-                    Эпизодов:
-                  </span>
-                  <span>
-                    {getEpisodesText(
-                      anime.episodes,
-                      anime.episodes_aired,
-                      anime.status
+                  {/* @ts-ignore-next-line */}
+                  <Headline className="vkuiContentCard__text" weight="2" level="1">
+                    {anime.russian}
+                  </Headline>
+                  <Text
+                    className="vkuiContentCard__text"
+                    weight="medium"
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <span style={{ color: "var(--text_subhead)" }}>
+                      Статус:
+                    </span>
+                    <span>{getStatusText(anime.status)}</span>
+                  </Text>
+                  <Text
+                    className="vkuiContentCard__text"
+                    weight="medium"
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <span style={{ color: "var(--text_subhead)" }}>
+                      Рейтинг:
+                    </span>
+                    <span>{getScoreText(anime.score)}</span>
+                  </Text>
+                  {anime.kind !== AnimeKinds.MOVIE &&
+                    anime.status !== AnimeStatuses.Anons && (
+                      <Text
+                        className="vkuiContentCard__text"
+                        weight="medium"
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <span style={{ color: "var(--text_subhead)" }}>
+                          Эпизодов:
+                        </span>
+                        <span>
+                          {getEpisodesText(
+                            anime.episodes,
+                            anime.episodes_aired,
+                            anime.status
+                          )}
+                        </span>
+                      </Text>
                     )}
-                  </span>
-                </Text>
-              )}
-              <Caption
-                className="vkuiContentCard__text vkuiContentCard__caption"
-                style={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <span>{getKindText(anime.kind)}</span>
-                <span>{getYearText(anime.aired_on)}</span>
-              </Caption>
-              <Caption
-                className="vkuiContentCard__text vkuiContentCard__subtitle"
-                weight="1"
-                level="3"
-                caps
-                style={{ display: "flex", justifyContent: "end" }}
-              >
-                <Link href={`${shikimoriBaseUrl}${anime.url}`} target="_blank">
-                  Подробнее на shikimori{" "}
-                  <Icon24ExternalLinkOutline width={16} height={16} />
-                </Link>
-              </Caption>
-            </div>
-          </Card>
-          <Div>
-            <Button
-              after={<Icon24ArrowRightOutline />}
-              appearance="accent"
-              stretched
-              mode="primary"
-              size="l"
-              onClick={() => refetch()}
-            >
-              Следующее
-            </Button>
-          </Div>
+                  <Caption
+                    className="vkuiContentCard__text vkuiContentCard__caption"
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <span>{getKindText(anime.kind)}</span>
+                    <span>{getYearText(anime.aired_on)}</span>
+                  </Caption>
+                  <Caption
+                    className="vkuiContentCard__text vkuiContentCard__subtitle"
+                    weight="1"
+                    level="3"
+                    caps
+                    style={{ display: "flex", justifyContent: "end" }}
+                  >
+                    <Link
+                      href={`${shikimoriBaseUrl}${anime.url}`}
+                      target="_blank"
+                    >
+                      Подробнее на shikimori{" "}
+                      <Icon24ExternalLinkOutline width={16} height={16} />
+                    </Link>
+                  </Caption>
+                </div>
+              </Card>
+              <Div>
+                <Button
+                  after={<Icon24ArrowRightOutline />}
+                  appearance="accent"
+                  stretched
+                  mode="primary"
+                  size="l"
+                  onClick={() => refetch()}
+                >
+                  Следующее
+                </Button>
+              </Div>
+            </>
+          ) : (
+            <Placeholder icon={<Icon24ErrorCircleOutline />}>
+              Ничего не найденно. Попробуйте изменить параметры поиска!
+            </Placeholder>
+          )}
         </Group>
-      ) : null}
+      )}
     </Panel>
   );
 };

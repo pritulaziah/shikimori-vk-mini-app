@@ -23,7 +23,8 @@
     "start": "cross-env PORT=10888 HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "tunnel": "vk-tunnel --insecure=1 --http-protocol=https --ws-protocol=wss --host=localhost --port=10888"
+    "tunnel": "vk-tunnel --insecure=1 --http-protocol=https --ws-protocol=wss --host=localhost --port=10888",
+    "deploy": "vk-miniapps-deploy"
   },
   "eslintConfig": {
     "extends": [

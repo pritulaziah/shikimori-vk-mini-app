@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Checkbox, SimpleCell, IconButton, Counter } from "@vkontakte/vkui";
+import {
+  Checkbox,
+  SimpleCell,
+  IconButton,
+  Counter,
+  Footer,
+} from "@vkontakte/vkui";
 import {
   Icon28ChevronUpOutline,
   Icon28ChevronDownOutline,
@@ -12,10 +18,11 @@ interface IProps {
   title: string;
   collection: { [key: string]: string };
   children?: React.ReactNode;
+  expanded?: boolean
 }
 
-const AnimeFilter = ({ paramName, title, collection, children }: IProps) => {
-  const [expanded, setExpanded] = useState(true);
+const AnimeFilter = ({ paramName, title, collection, children, expanded: defaultExpanded = true }: IProps) => {
+  const [expanded, setExpanded] = useState(defaultExpanded);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const { onChangeParams } = useAnimeFilterParams();
 
@@ -37,10 +44,12 @@ const AnimeFilter = ({ paramName, title, collection, children }: IProps) => {
   };
 
   useEffect(() => {
-    onChangeParams(paramName, [...selected])
-  }, [selected])
+    onChangeParams(paramName, [...selected]);
+  }, [selected]);
 
   const onChangeExpand = () => setExpanded((prevState) => !prevState);
+
+  const collectionArray = Object.entries(collection);
 
   return (
     <>
@@ -68,8 +77,8 @@ const AnimeFilter = ({ paramName, title, collection, children }: IProps) => {
       {expanded && (
         <>
           {children}
-          {Object.entries(collection).map(
-            ([animeStatusKey, animeStatusValue]) => (
+          {collectionArray.length ? (
+            collectionArray.map(([animeStatusKey, animeStatusValue]) => (
               <Checkbox
                 key={animeStatusKey}
                 id={String(animeStatusKey)}
@@ -78,7 +87,9 @@ const AnimeFilter = ({ paramName, title, collection, children }: IProps) => {
               >
                 {animeStatusValue}
               </Checkbox>
-            )
+            ))
+          ) : (
+            <Footer>Ничего не найдено</Footer>
           )}
         </>
       )}

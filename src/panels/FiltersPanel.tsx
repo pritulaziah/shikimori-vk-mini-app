@@ -8,10 +8,10 @@ const FiltersPanel = () => {
     <Panel>
       <PanelHeader />
       <Group>
+        <GenreFilter />
         <AnimeFilter title="Тип" paramName="kind" collection={animeKinds} />
         <AnimeFilter title="Статус" paramName="status" collection={animeStatuses} />
         <AnimeFilter title="Рейтинг" paramName="rating" collection={animeAgeRatings} />
-        <GenreFilter />
       </Group>
     </Panel>
   );
