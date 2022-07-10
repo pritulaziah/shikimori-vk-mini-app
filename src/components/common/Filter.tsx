@@ -55,7 +55,7 @@ const Filter = ({
 
   useEffect(() => {
     onChangeParams(paramName, [...selected]);
-  }, [selected, onChangeParams, paramName]);
+  }, [selected, paramName]);
 
   const onChangeExpand = () => setExpanded((prevState) => !prevState);
 
