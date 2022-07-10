@@ -25,6 +25,7 @@ import shikimoriBaseUrl from "../constants/shikimoriBaseUrl";
 import useFilter from "../hooks/useFilter";
 import { animeStatuses, animeKinds } from "../constants/animeCollections";
 import { mangaStatuses, mangaKinds } from "../constants/mangaCollections";
+import useAdult from "../hooks/useAdult";
 
 // TODO: think about split anime and manga
 
@@ -80,10 +81,11 @@ interface IProps {
 
 const ViewCard = ({ type }: IProps) => {
   const { params } = useFilter();
+  const { adult } = useAdult();
   const { isLoading, data, refetch } = useQuery<(Anime | Manga)[]>(
     [type, params],
     queryFn(type, {
-      censored: false,
+      censored: !adult,
       order: "random",
       limit: 1,
       status: paramToString(params.status),

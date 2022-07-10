@@ -8,6 +8,7 @@ import {
 } from "@vkontakte/vkui";
 import bridge from "@vkontakte/vk-bridge";
 import "@vkontakte/vkui/dist/vkui.css";
+import AdultProvider from "./providers/AdultProvider";
 import AnimePanel from "./panels/AnimePanel";
 import HomePanel from "./panels/HomePanel";
 import SettingsPanel from "./panels/SettingsPanel";
@@ -34,12 +35,17 @@ const App = () => {
     <ConfigProvider appearance={scheme}>
       <AdaptivityProvider>
         <AppRoot>
-          <View activePanel={activePanel}>
-            <HomePanel id={Panels.Home} changePanel={setActivePanel} />
-            <AnimePanel id={Panels.Anime} changePanel={setActivePanel} />
-            <MangaPanel id={Panels.Mange} changePanel={setActivePanel} />
-            <SettingsPanel id={Panels.Settings} changePanel={setActivePanel} />
-          </View>
+          <AdultProvider>
+            <View activePanel={activePanel}>
+              <HomePanel id={Panels.Home} changePanel={setActivePanel} />
+              <AnimePanel id={Panels.Anime} changePanel={setActivePanel} />
+              <MangaPanel id={Panels.Mange} changePanel={setActivePanel} />
+              <SettingsPanel
+                id={Panels.Settings}
+                changePanel={setActivePanel}
+              />
+            </View>
+          </AdultProvider>
         </AppRoot>
       </AdaptivityProvider>
     </ConfigProvider>

@@ -6,6 +6,7 @@ import {
 } from "@vkontakte/icons";
 import useFilter from "../../hooks/useFilter";
 import { Params, FilterCollection } from "../../types/filter";
+import useAdult from "../../hooks/useAdult";
 
 interface IProps {
   paramName: keyof Params;
@@ -26,6 +27,7 @@ const Filter = ({
   expanded: defaultExpanded = true,
   multiple = true,
 }: IProps) => {
+  const { adult } = useAdult();
   const [expanded, setExpanded] = useState(defaultExpanded);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const { onChangeParams } = useFilter();
@@ -83,16 +85,20 @@ const Filter = ({
       {expanded && (
         <>
           {beforeSlot}
-          {collection.map(({ value, label }) => (
-            <Checkbox
-              key={value}
-              id={String(value)}
-              checked={selected.has(value)}
-              onChange={onChangeSelected}
-            >
-              {label}
-            </Checkbox>
-          ))}
+          {collection
+            .filter((collectionItem) =>
+              collectionItem.adult ? collectionItem.adult === adult : true
+            )
+            .map(({ value, label }) => (
+              <Checkbox
+                key={value}
+                id={String(value)}
+                checked={selected.has(value)}
+                onChange={onChangeSelected}
+              >
+                {label}
+              </Checkbox>
+            ))}
           {afterSlot}
         </>
       )}
