@@ -104,89 +104,46 @@ const ViewCard = ({ type }: IProps) => {
 
   const [animeOrManga] = data || [];
 
-  return (
-    <Panel>
-      <PanelHeader />
-      {isLoading ? (
-        <PanelSpinner />
-      ) : (
-        <Group style={{ alignItems: "center" }}>
-          {animeOrManga ? (
-            <>
-              <Card className="vkuiContentCard">
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <img
-                    className="ContentCard__img"
-                    src={`${shikimoriBaseUrl}${animeOrManga.image.original}`}
-                    style={{ maxWidth: "100%", height: 300 }}
-                  />
-                </div>
-                <div
-                  className="vkuiContentCard__body"
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  <Headline
-                    className="vkuiContentCard__text"
-                    weight="2"
-                    level="1"
-                  >
-                    {animeOrManga.russian}
-                  </Headline>
-                  <Text
-                    className="vkuiContentCard__text"
-                    weight="medium"
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <span style={{ color: "var(--text_subhead)" }}>
-                      Рейтинг:
-                    </span>
-                    <span>{getScoreText(animeOrManga.score)}</span>
-                  </Text>
-                  <Text
-                    className="vkuiContentCard__text"
-                    weight="medium"
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <span style={{ color: "var(--text_subhead)" }}>
-                      Статус:
-                    </span>
-                    <span>{getStatusText(type, animeOrManga.status)}</span>
-                  </Text>
-                  {type === "mangas" ? (
-                    <>
-                      {(animeOrManga as Manga).volumes > 0 && (
-                        <Text
-                          className="vkuiContentCard__text"
-                          weight="medium"
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <span style={{ color: "var(--text_subhead)" }}>
-                            Тома:
-                          </span>
-                          <span>{(animeOrManga as Manga).volumes}</span>
-                        </Text>
-                      )}
-                      {(animeOrManga as Manga).chapters > 0 && (
-                        <Text
-                          className="vkuiContentCard__text"
-                          weight="medium"
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <span style={{ color: "var(--text_subhead)" }}>
-                            Глав:
-                          </span>
-                          <span>{(animeOrManga as Manga).chapters}</span>
-                        </Text>
-                      )}
-                    </>
-                  ) : animeOrManga.kind !== AnimeKinds.MOVIE &&
-                    animeOrManga.status !== AnimeStatuses.Anons ? (
+  return isLoading ? (
+    <PanelSpinner />
+  ) : (
+    <Group style={{ alignItems: "center" }}>
+      {animeOrManga ? (
+        <>
+          <Card className="vkuiContentCard">
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <img
+                className="ContentCard__img"
+                src={`${shikimoriBaseUrl}${animeOrManga.image.original}`}
+                style={{ maxWidth: "100%", height: 300 }}
+              />
+            </div>
+            <div
+              className="vkuiContentCard__body"
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              <Headline className="vkuiContentCard__text" weight="2" level="1">
+                {animeOrManga.russian}
+              </Headline>
+              <Text
+                className="vkuiContentCard__text"
+                weight="medium"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <span style={{ color: "var(--text_subhead)" }}>Рейтинг:</span>
+                <span>{getScoreText(animeOrManga.score)}</span>
+              </Text>
+              <Text
+                className="vkuiContentCard__text"
+                weight="medium"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <span style={{ color: "var(--text_subhead)" }}>Статус:</span>
+                <span>{getStatusText(type, animeOrManga.status)}</span>
+              </Text>
+              {type === "mangas" ? (
+                <>
+                  {(animeOrManga as Manga).volumes > 0 && (
                     <Text
                       className="vkuiContentCard__text"
                       weight="medium"
@@ -196,56 +153,86 @@ const ViewCard = ({ type }: IProps) => {
                       }}
                     >
                       <span style={{ color: "var(--text_subhead)" }}>
-                        Эпизодов:
+                        Тома:
                       </span>
-                      <span>{getEpisodesText(animeOrManga as Anime)}</span>
+                      <span>{(animeOrManga as Manga).volumes}</span>
                     </Text>
-                  ) : null}
-                  <Caption
-                    className="vkuiContentCard__text vkuiContentCard__caption"
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <span>{getKindText(type, animeOrManga.kind)}</span>
-                    <span>{getYearText(animeOrManga.aired_on)}</span>
-                  </Caption>
-                  <Caption
-                    className="vkuiContentCard__text vkuiContentCard__subtitle"
-                    weight="1"
-                    level="3"
-                    caps
-                    style={{ display: "flex", justifyContent: "end" }}
-                  >
-                    <Link
-                      href={`${shikimoriBaseUrl}${animeOrManga.url}`}
-                      target="_blank"
+                  )}
+                  {(animeOrManga as Manga).chapters > 0 && (
+                    <Text
+                      className="vkuiContentCard__text"
+                      weight="medium"
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
                     >
-                      Подробнее на shikimori{" "}
-                      <Icon24ExternalLinkOutline width={16} height={16} />
-                    </Link>
-                  </Caption>
-                </div>
-              </Card>
-              <Div>
-                <Button
-                  after={<Icon24ArrowRightOutline />}
-                  appearance="accent"
-                  stretched
-                  mode="primary"
-                  size="l"
-                  onClick={() => refetch()}
+                      <span style={{ color: "var(--text_subhead)" }}>
+                        Глав:
+                      </span>
+                      <span>{(animeOrManga as Manga).chapters}</span>
+                    </Text>
+                  )}
+                </>
+              ) : animeOrManga.kind !== AnimeKinds.MOVIE &&
+                animeOrManga.status !== AnimeStatuses.Anons ? (
+                <Text
+                  className="vkuiContentCard__text"
+                  weight="medium"
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
                 >
-                  Следующее
-                </Button>
-              </Div>
-            </>
-          ) : (
-            <Placeholder icon={<Icon24ErrorCircleOutline />}>
-              Ничего не найденно. Попробуйте изменить параметры поиска!
-            </Placeholder>
-          )}
-        </Group>
+                  <span style={{ color: "var(--text_subhead)" }}>
+                    Эпизодов:
+                  </span>
+                  <span>{getEpisodesText(animeOrManga as Anime)}</span>
+                </Text>
+              ) : null}
+              <Caption
+                className="vkuiContentCard__text vkuiContentCard__caption"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <span>{getKindText(type, animeOrManga.kind)}</span>
+                <span>{getYearText(animeOrManga.aired_on)}</span>
+              </Caption>
+              <Caption
+                className="vkuiContentCard__text vkuiContentCard__subtitle"
+                weight="1"
+                level="3"
+                caps
+                style={{ display: "flex", justifyContent: "end" }}
+              >
+                <Link
+                  href={`${shikimoriBaseUrl}${animeOrManga.url}`}
+                  target="_blank"
+                >
+                  Подробнее на shikimori{" "}
+                  <Icon24ExternalLinkOutline width={16} height={16} />
+                </Link>
+              </Caption>
+            </div>
+          </Card>
+          <Div>
+            <Button
+              after={<Icon24ArrowRightOutline />}
+              appearance="accent"
+              stretched
+              mode="primary"
+              size="l"
+              onClick={() => refetch()}
+            >
+              Следующее
+            </Button>
+          </Div>
+        </>
+      ) : (
+        <Placeholder icon={<Icon24ErrorCircleOutline />}>
+          Ничего не найденно. Попробуйте изменить параметры поиска!
+        </Placeholder>
       )}
-    </Panel>
+    </Group>
   );
 };
 

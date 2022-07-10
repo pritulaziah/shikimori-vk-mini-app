@@ -32,7 +32,7 @@ const App = () => {
   }, []);
 
   return (
-    <ConfigProvider appearance={scheme}>
+    <ConfigProvider appearance={scheme} platform="vkcom">
       <AdaptivityProvider>
         <AppRoot>
           <AdultProvider>

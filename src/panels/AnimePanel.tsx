@@ -2,7 +2,6 @@ import {
   Panel,
   SplitLayout,
   SplitCol,
-  PanelHeader,
   Group,
 } from "@vkontakte/vkui";
 import FiltersProvider from "../providers/FiltersProvider";
@@ -21,21 +20,17 @@ import scoreCollection from "../constants/scoreCollection";
 const AnimePanel = ({ id, changePanel }: IPanel) => {
   return (
     <Panel id={id}>
+      <HeaderButtonBack
+        onClick={() => changePanel(Panels.Home)}
+        style={{ zIndex: 1000 }}
+        separator={false}
+      >
+        Случайное Аниме
+      </HeaderButtonBack>
       <FiltersProvider>
-        <SplitLayout
-          style={{ justifyContent: "center" }}
-          header={
-            <HeaderButtonBack
-              onClick={() => changePanel(Panels.Home)}
-              style={{ zIndex: 1000 }}
-            >
-              Случайное Аниме
-            </HeaderButtonBack>
-          }
-        >
-          <SplitCol animate={false} width={240} maxWidth={240}>
+        <SplitLayout style={{ justifyContent: "center" }}>
+          <SplitCol width={240} maxWidth={240} style={{ marginTop: '15px' }}>
             <Panel>
-              <PanelHeader />
               <Group>
                 <GenreFilter type="anime" />
                 <Filter title="Тип" paramName="kind" collection={animeKinds} />
@@ -59,13 +54,15 @@ const AnimePanel = ({ id, changePanel }: IPanel) => {
             </Panel>
           </SplitCol>
           <SplitCol
-            animate={false}
             spaced
             width={"380px"}
             maxWidth={"380px"}
             fixed
+            style={{ marginTop: '15px' }}
           >
-            <ViewCard type="animes" />
+            <Panel>
+              <ViewCard type="animes" />
+            </Panel>
           </SplitCol>
         </SplitLayout>
       </FiltersProvider>
