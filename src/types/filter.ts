@@ -5,7 +5,7 @@ export interface Params {
   status: string[];
 }
 
-export interface FilterParams {
+export interface Filter {
   params: Params;
   onChangeParams: (paramName: keyof Params, paramValue: string[]) => void;
 }

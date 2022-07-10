@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 import {
   AppRoot,
-  SplitLayout,
-  SplitCol,
-  PanelHeader,
   AdaptivityProvider,
   ConfigProvider,
   Appearance,
+  View,
 } from "@vkontakte/vkui";
 import bridge from "@vkontakte/vk-bridge";
 import "@vkontakte/vkui/dist/vkui.css";
-import FiltersPanel from "./panels/FiltersPanel";
 import AnimePanel from "./panels/AnimePanel";
-import AnimeFiltersProvider from "./providers/AnimeFiltersProvider";
+import HomePanel from "./panels/HomePanel";
+import SettingsPanel from "./panels/SettingsPanel";
+import { Panels } from "./types/panel";
 
 const App = () => {
+  const [activePanel, setActivePanel] = useState<Panels>(Panels.Home);
   const [scheme, setScheme] = useState(Appearance.LIGHT);
 
   useEffect(() => {
@@ -33,19 +33,11 @@ const App = () => {
     <ConfigProvider appearance={scheme}>
       <AdaptivityProvider>
         <AppRoot>
-          <AnimeFiltersProvider>
-            <SplitLayout
-              style={{ justifyContent: "center" }}
-              header={<PanelHeader separator={false} />}
-            >
-              <SplitCol width={240} maxWidth={240}>
-                <FiltersPanel />
-              </SplitCol>
-              <SplitCol animate spaced width={"380px"} maxWidth={"380px"} fixed>
-                <AnimePanel />
-              </SplitCol>
-            </SplitLayout>
-          </AnimeFiltersProvider>
+          <View activePanel={activePanel}>
+            <HomePanel id={Panels.Home} changePanel={setActivePanel} />
+            <AnimePanel id={Panels.Anime} changePanel={setActivePanel} />
+            <SettingsPanel id={Panels.Settings} changePanel={setActivePanel} />
+          </View>
         </AppRoot>
       </AdaptivityProvider>
     </ConfigProvider>

@@ -4,8 +4,8 @@ import {
   Icon28ChevronUpOutline,
   Icon28ChevronDownOutline,
 } from "@vkontakte/icons";
-import useAnimeFilterParams from "../../hooks/useAnimeFilterParams";
-import { Params } from "../../types/filterParams";
+import useFilter from "../../hooks/useFilter";
+import { Params } from "../../types/filter";
 import { AnimeCollection } from "../../constants/animeCollections";
 
 interface IProps {
@@ -27,7 +27,7 @@ const AnimeFilter = ({
 }: IProps) => {
   const [expanded, setExpanded] = useState(defaultExpanded);
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const { onChangeParams } = useAnimeFilterParams();
+  const { onChangeParams } = useFilter();
 
   const onChangeSelected = (event: React.ChangeEvent<HTMLElement>) => {
     const id = event.currentTarget.id;

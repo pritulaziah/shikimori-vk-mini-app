@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
-import AnimeFiltersContext from "../context/AnimeFiltersContext";
-import { FilterParams } from "../types/filterParams";
+import FiltersContext from "../context/FiltersContext";
+import { Filter } from "../types/filter";
 
 interface IProps {
   children: React.ReactNode;
 }
 
-const AnimeFiltersProvider = ({ children }: IProps) => {
-  const [params, setParams] = useState<FilterParams["params"]>({
+const FiltersProvider = ({ children }: IProps) => {
+  const [params, setParams] = useState<Filter["params"]>({
     genre: [],
     rating: [],
     kind: [],
@@ -15,7 +15,7 @@ const AnimeFiltersProvider = ({ children }: IProps) => {
   });
 
   const value = useMemo(() => {
-    const onChangeParams: FilterParams["onChangeParams"] = (
+    const onChangeParams: Filter["onChangeParams"] = (
       paramName,
       paramValue
     ) => {
@@ -31,10 +31,10 @@ const AnimeFiltersProvider = ({ children }: IProps) => {
   }, [params]);
 
   return (
-    <AnimeFiltersContext.Provider value={value}>
+    <FiltersContext.Provider value={value}>
       {children}
-    </AnimeFiltersContext.Provider>
+    </FiltersContext.Provider>
   );
 };
 
-export default AnimeFiltersProvider;
+export default FiltersProvider;
