@@ -1,6 +1,4 @@
 import {
-  Panel,
-  PanelHeader,
   Group,
   Card,
   Button,
@@ -116,6 +114,7 @@ const ViewCard = ({ type }: IProps) => {
                 className="ContentCard__img"
                 src={`${shikimoriBaseUrl}${animeOrManga.image.original}`}
                 style={{ maxWidth: "100%", height: 300 }}
+                alt=""
               />
             </div>
             <div

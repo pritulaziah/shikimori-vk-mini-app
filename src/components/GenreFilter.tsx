@@ -37,7 +37,7 @@ const GenreFilter = ({ type }: IProps) => {
           value: String(genre.id),
           adult: adultGenres.includes(genre.id),
         })),
-    [data, search]
+    [data, search, type]
   );
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
