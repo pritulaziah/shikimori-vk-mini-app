@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import queryFn from "../utils/queryFn";
-import { Search } from "@vkontakte/vkui";
+import { Search, Footer } from "@vkontakte/vkui";
 import AnimeFilter from "./common/AnimeFilter";
+import { AnimeCollection } from "../constants/animeCollections";
 
 enum GenreKinds {
   Anime = "anime",
@@ -16,14 +17,13 @@ interface Genre {
   russian: string;
 }
 
+const adultGenres = [33, 34, 12, 539];
+
 const GenreFilter = () => {
   const [search, setSearch] = useState("");
-  const { data } = useQuery<Genre[]>(
-    ["genres"],
-    queryFn("genres")
-  );
+  const { data } = useQuery<Genre[]>(["genres"], queryFn("genres"));
 
-  const animeGenres = useMemo(
+  const collection = useMemo(
     () =>
       (data || [])
         .filter(
@@ -31,10 +31,11 @@ const GenreFilter = () => {
             genre.kind === GenreKinds.Anime &&
             genre.russian.toLowerCase().includes(search.toLowerCase())
         )
-        .reduce<{ [key: string]: string }>((acc, item) => {
-          acc[item.id] = item.russian;
-          return acc;
-        }, {}),
+        .map<AnimeCollection>((genre) => ({
+          label: genre.russian,
+          value: String(genre.id),
+          adult: adultGenres.includes(genre.id),
+        })),
     [data, search]
   );
 
@@ -43,9 +44,14 @@ const GenreFilter = () => {
   };
 
   return (
-    <AnimeFilter title="Жанр" paramName="genre" collection={animeGenres} expanded={false}>
-      <Search onChange={onChangeSearch} value={search} />
-    </AnimeFilter>
+    <AnimeFilter
+      title="Жанр"
+      paramName="genre"
+      collection={collection}
+      expanded={false}
+      beforeSlot={<Search onChange={onChangeSearch} value={search} />}
+      afterSlot={collection.length === 0 && <Footer>Ничего не найдено</Footer>}
+    />
   );
 };
 

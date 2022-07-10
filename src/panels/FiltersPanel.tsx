@@ -1,7 +1,7 @@
 import { Panel, PanelHeader, Group } from "@vkontakte/vkui";
 import AnimeFilter from "../components/common/AnimeFilter";
 import GenreFilter from "../components/GenreFilter";
-import { animeStatuses, animeKinds, animeAgeRatings } from "../constants/animeDicts";
+import { animeStatuses, animeKinds, animeAgeRatings } from "../constants/animeCollections";
 
 const FiltersPanel = () => {
   return (

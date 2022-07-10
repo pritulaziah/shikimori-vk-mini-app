@@ -20,7 +20,7 @@ import {
 import { useQuery } from "react-query";
 import queryFn from "../utils/queryFn";
 import { AnimeStatuses, AnimeKinds } from "../types/anime";
-import { animeStatuses } from "../constants/animeDicts";
+import { AnimeCollection, animeStatuses } from "../constants/animeCollections";
 import shikimoriBaseUrl from "../constants/shikimoriBaseUrl";
 import useAnimeFilterParams from "../hooks/useAnimeFilterParams";
 
@@ -73,7 +73,11 @@ const getYearText = (airedOn: Anime["aired_on"]) =>
 const getScoreText = (score: Anime["score"]) =>
   score === "0.0" ? "Без оценки" : score;
 
-const getStatusText = (status: Anime["status"]) => animeStatuses[status];
+const getStatusText = (status: Anime["status"]) => {
+  const findedAnimeStatus = animeStatuses.find(animeStatus => animeStatus.value === status) as AnimeCollection;
+
+  return findedAnimeStatus.label
+};
 
 const getEpisodesText = (
   episodes: Anime["episodes"],
