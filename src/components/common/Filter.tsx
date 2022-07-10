@@ -5,25 +5,26 @@ import {
   Icon28ChevronDownOutline,
 } from "@vkontakte/icons";
 import useFilter from "../../hooks/useFilter";
-import { Params } from "../../types/filter";
-import { AnimeCollection } from "../../constants/animeCollections";
+import { Params, FilterCollection } from "../../types/filter";
 
 interface IProps {
   paramName: keyof Params;
   title: string;
-  collection: AnimeCollection[];
+  collection: FilterCollection[];
   beforeSlot?: React.ReactNode;
   afterSlot?: React.ReactNode;
   expanded?: boolean;
+  multiple?: boolean;
 }
 
-const AnimeFilter = ({
+const Filter = ({
   paramName,
   title,
   collection,
   beforeSlot,
   afterSlot,
   expanded: defaultExpanded = true,
+  multiple = true,
 }: IProps) => {
   const [expanded, setExpanded] = useState(defaultExpanded);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -39,6 +40,10 @@ const AnimeFilter = ({
       if (checked) {
         newState.delete(id);
       } else {
+        if (!multiple) {
+          newState.clear();
+        }
+
         newState.add(id);
       }
 
@@ -95,4 +100,4 @@ const AnimeFilter = ({
   );
 };
 
-export default AnimeFilter;
+export default Filter;

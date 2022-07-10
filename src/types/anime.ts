@@ -1,8 +1,28 @@
+export interface Anime {
+  id: number;
+  name: string;
+  russian: string;
+  image: {
+    original: string;
+    preview: string;
+    x96: string;
+    x48: string;
+  };
+  url: string;
+  score: string;
+  aired_on: string;
+  released_on: string | null;
+  kind: AnimeKinds;
+  status: AnimeStatuses;
+  episodes: number;
+  episodes_aired: number;
+}
+
 export enum AnimeStatuses {
   Anons = "anons",
   Ongoing = "ongoing",
   Released = "released",
-  Latest = 'latest',
+  Latest = "latest",
 }
 
 export enum AnimeKinds {

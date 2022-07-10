@@ -2,24 +2,25 @@ import { useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import queryFn from "../utils/queryFn";
 import { Search, Footer } from "@vkontakte/vkui";
-import AnimeFilter from "./common/AnimeFilter";
-import { AnimeCollection } from "../constants/animeCollections";
+import Filter from "./common/Filter";
+import { FilterCollection } from "../types/filter";
 
-enum GenreKinds {
-  Anime = "anime",
-  Mange = "manga",
-}
+const adultGenres = [33, 34, 12, 539];
+
+type GenreType = "anime" | "manga";
 
 interface Genre {
   id: number;
-  kind: GenreKinds;
+  kind: GenreType;
   name: string;
   russian: string;
 }
 
-const adultGenres = [33, 34, 12, 539];
+interface IProps {
+  type: GenreType;
+}
 
-const GenreFilter = () => {
+const GenreFilter = ({ type }: IProps) => {
   const [search, setSearch] = useState("");
   const { data } = useQuery<Genre[]>(["genres"], queryFn("genres"));
 
@@ -28,10 +29,10 @@ const GenreFilter = () => {
       (data || [])
         .filter(
           (genre) =>
-            genre.kind === GenreKinds.Anime &&
+            genre.kind === type &&
             genre.russian.toLowerCase().includes(search.toLowerCase())
         )
-        .map<AnimeCollection>((genre) => ({
+        .map<FilterCollection>((genre) => ({
           label: genre.russian,
           value: String(genre.id),
           adult: adultGenres.includes(genre.id),
@@ -44,7 +45,7 @@ const GenreFilter = () => {
   };
 
   return (
-    <AnimeFilter
+    <Filter
       title="Жанр"
       paramName="genre"
       collection={collection}

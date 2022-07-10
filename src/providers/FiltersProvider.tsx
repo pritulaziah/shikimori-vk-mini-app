@@ -12,6 +12,7 @@ const FiltersProvider = ({ children }: IProps) => {
     rating: [],
     kind: [],
     status: [],
+    score: [],
   });
 
   const value = useMemo(() => {

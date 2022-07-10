@@ -1,12 +1,7 @@
 import { AnimeStatuses, AnimeKinds, AnimeAgeRatings } from "../types/anime";
+import { FilterCollection } from '../types/filter'
 
-export interface AnimeCollection {
-  value: string;
-  label: string;
-  adult?: boolean
-}
-
-export const animeKinds: AnimeCollection[] = [
+export const animeKinds: FilterCollection[] = [
   { value: AnimeKinds.TV, label: "TV Сериал" },
   { value: AnimeKinds.MOVIE, label: "Фильм" },
   { value: AnimeKinds.OVA, label: "OVA" },
@@ -14,7 +9,7 @@ export const animeKinds: AnimeCollection[] = [
   { value: AnimeKinds.SPECIAL, label: "Спешл" },
 ];
 
-export const animeStatuses: AnimeCollection[] = [
+export const animeStatuses: FilterCollection[] = [
   { value: AnimeStatuses.Released, label: "Вышел" },
   { value: AnimeStatuses.Ongoing, label: "Сейчас выходит" },
   { value: AnimeStatuses.Anons, label: "Анонсировано" },
@@ -23,7 +18,7 @@ export const animeStatuses: AnimeCollection[] = [
 
 const animeAgeRatingsKeys = Object.keys(AnimeAgeRatings);
 
-export const animeAgeRatings: AnimeCollection[] = [
+export const animeAgeRatings: FilterCollection[] = [
   { value: AnimeAgeRatings.G, label: animeAgeRatingsKeys[0] },
   { value: AnimeAgeRatings.PG, label: animeAgeRatingsKeys[1] },
   { value: AnimeAgeRatings["PG-13"], label: animeAgeRatingsKeys[2] },

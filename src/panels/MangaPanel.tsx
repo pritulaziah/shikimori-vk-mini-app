@@ -11,14 +11,10 @@ import HeaderButtonBack from "../components/common/HeaderButtonBack";
 import { IPanel, Panels } from "../types/panel";
 import Filter from "../components/common/Filter";
 import GenreFilter from "../components/GenreFilter";
-import {
-  animeStatuses,
-  animeKinds,
-  animeAgeRatings,
-} from "../constants/animeCollections";
-import scoreCollection from "../constants/scoreCollection";
+import { mangaStatuses, mangaKinds } from "../constants/mangaCollections";
+import scoreCollection from '../constants/scoreCollection'
 
-const AnimePanel = ({ id, changePanel }: IPanel) => {
+const MangaPanel = ({ id, changePanel }: IPanel) => {
   return (
     <Panel id={id}>
       <FiltersProvider>
@@ -29,7 +25,7 @@ const AnimePanel = ({ id, changePanel }: IPanel) => {
               onClick={() => changePanel(Panels.Home)}
               style={{ zIndex: 1000 }}
             >
-              Случайное Аниме
+              Случайная манга
             </HeaderButtonBack>
           }
         >
@@ -37,24 +33,19 @@ const AnimePanel = ({ id, changePanel }: IPanel) => {
             <Panel>
               <PanelHeader />
               <Group>
-                <GenreFilter type="anime" />
-                <Filter title="Тип" paramName="kind" collection={animeKinds} />
+                <GenreFilter type="manga" />
+                <Filter title="Тип" paramName="kind" collection={mangaKinds} />
                 <Filter
                   title="Статус"
                   paramName="status"
-                  collection={animeStatuses}
+                  collection={mangaStatuses}
                 />
-                <Filter
+                <Filter 
                   title="Оценка"
                   paramName="score"
                   multiple={false}
                   collection={scoreCollection}
-                />
-                <Filter
-                  title="Рейтинг"
-                  paramName="rating"
-                  collection={animeAgeRatings}
-                />
+                  />
               </Group>
             </Panel>
           </SplitCol>
@@ -65,7 +56,7 @@ const AnimePanel = ({ id, changePanel }: IPanel) => {
             maxWidth={"380px"}
             fixed
           >
-            <ViewCard type="animes" />
+            <ViewCard type="mangas" />
           </SplitCol>
         </SplitLayout>
       </FiltersProvider>
@@ -73,4 +64,4 @@ const AnimePanel = ({ id, changePanel }: IPanel) => {
   );
 };
 
-export default AnimePanel;
+export default MangaPanel;
