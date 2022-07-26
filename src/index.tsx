@@ -3,7 +3,8 @@ import bridge from "@vkontakte/vk-bridge";
 import App from "./App";
 import { QueryClient, QueryClientProvider } from "react-query";
 import axios from "axios";
-import shikimoriBaseUrl from "./constants/shikimoriBaseUrl";
+import "@vkontakte/vkui/dist/vkui.css";
+import shikimoriBaseUrl from "constants/shikimoriBaseUrl";
 
 axios.defaults.baseURL = `${shikimoriBaseUrl}/api/`;
 

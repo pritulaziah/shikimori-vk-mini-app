@@ -1,5 +1,5 @@
-import { MangaStatuses, MangaKinds } from "../types/manga";
-import { FilterCollection } from "../types/filter";
+import { MangaStatuses, MangaKinds } from "types/manga";
+import { FilterCollection } from "types/filter";
 
 export const mangaKinds: FilterCollection[] = [
   { value: MangaKinds.Manga, label: "Манга" },

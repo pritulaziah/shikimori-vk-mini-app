@@ -7,13 +7,12 @@ import {
   View,
 } from "@vkontakte/vkui";
 import bridge from "@vkontakte/vk-bridge";
-import "@vkontakte/vkui/dist/vkui.css";
-import AdultProvider from "./providers/AdultProvider";
-import AnimePanel from "./panels/AnimePanel";
-import HomePanel from "./panels/HomePanel";
-import SettingsPanel from "./panels/SettingsPanel";
-import { Panels } from "./types/panel";
-import MangaPanel from "./panels/MangaPanel";
+import AdultProvider from "providers/AdultProvider";
+import { Panels } from "types/panel";
+import AnimePanel from "panels/AnimePanel";
+import HomePanel from "panels/HomePanel";
+import SettingsPanel from "panels/SettingsPanel";
+import MangaPanel from "panels/MangaPanel";
 
 const App = () => {
   const [activePanel, setActivePanel] = useState<Panels>(Panels.Home);

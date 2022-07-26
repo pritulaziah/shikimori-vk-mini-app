@@ -7,9 +7,9 @@ import {
   Link,
   Header,
 } from "@vkontakte/vkui";
-import HeaderButtonBack from "../components/common/HeaderButtonBack";
-import useAdult from "../hooks/useAdult";
-import { IPanel, Panels } from "../types/panel";
+import HeaderButtonBack from "components/common/HeaderButtonBack";
+import useAdult from "hooks/useAdult";
+import { IPanel, Panels } from "types/panel";
 
 const SettingsPanel = ({ id, changePanel }: IPanel) => {
   const { adult, onChangeAdult } = useAdult();
@@ -25,7 +25,7 @@ const SettingsPanel = ({ id, changePanel }: IPanel) => {
           Component="label"
           after={<Switch checked={adult} onChange={() => onChangeAdult()} />}
         >
-          Показывать 18+ конент
+          Показывать 18+ контент
         </SimpleCell>
       </Group>
       <Footer>

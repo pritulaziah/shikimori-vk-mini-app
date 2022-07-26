@@ -1,11 +1,9 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "react-query";
-import queryFn from "../utils/queryFn";
 import { Search, Footer } from "@vkontakte/vkui";
-import Filter from "./common/Filter";
-import { FilterCollection } from "../types/filter";
-
-const adultGenres = [33, 34, 12, 539];
+import { FilterCollection } from "types/filter";
+import queryFn from "utils/queryFn";
+import Filter from "components/common/Filter";
 
 type GenreType = "anime" | "manga";
 
@@ -20,6 +18,8 @@ interface IProps {
   type: GenreType;
 }
 
+const adultGenres = [33, 34, 12, 539];
+
 const GenreFilter = ({ type }: IProps) => {
   const [search, setSearch] = useState("");
   const { data } = useQuery<Genre[]>(["genres"], queryFn("genres"));
@@ -27,17 +27,13 @@ const GenreFilter = ({ type }: IProps) => {
   const collection = useMemo(
     () =>
       (data || [])
-        .filter(
-          (genre) =>
-            genre.kind === type &&
-            genre.russian.toLowerCase().includes(search.toLowerCase())
-        )
+        .filter((genre) => genre.kind === type)
         .map<FilterCollection>((genre) => ({
           label: genre.russian,
           value: String(genre.id),
           adult: adultGenres.includes(genre.id),
         })),
-    [data, search, type]
+    [data, type]
   );
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +44,9 @@ const GenreFilter = ({ type }: IProps) => {
     <Filter
       title="Жанр"
       paramName="genre"
-      collection={collection}
+      collection={collection.filter((collectionItem) =>
+        collectionItem.label.toLowerCase().includes(search.toLowerCase())
+      )}
       expanded={false}
       beforeSlot={<Search onChange={onChangeSearch} value={search} />}
       afterSlot={collection.length === 0 && <Footer>Ничего не найдено</Footer>}

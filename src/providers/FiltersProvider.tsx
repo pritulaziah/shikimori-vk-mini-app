@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
-import FiltersContext from "../context/FiltersContext";
-import { Filter } from "../types/filter";
+import FiltersContext from "context/FiltersContext";
+import { Params } from "types/filter";
 
 interface IProps {
   children: React.ReactNode;
 }
 
 const FiltersProvider = ({ children }: IProps) => {
-  const [params, setParams] = useState<Filter["params"]>({
+  const [params, setParams] = useState<Params>({
     genre: [],
     rating: [],
     kind: [],
@@ -16,10 +16,7 @@ const FiltersProvider = ({ children }: IProps) => {
   });
 
   const value = useMemo(() => {
-    const onChangeParams: Filter["onChangeParams"] = (
-      paramName,
-      paramValue
-    ) => {
+    const onChangeParams = (paramName: keyof Params, paramValue: string[]) => {
       setParams((prevState) => {
         const newState = { ...prevState };
         newState[paramName] = paramValue;
@@ -32,9 +29,7 @@ const FiltersProvider = ({ children }: IProps) => {
   }, [params]);
 
   return (
-    <FiltersContext.Provider value={value}>
-      {children}
-    </FiltersContext.Provider>
+    <FiltersContext.Provider value={value}>{children}</FiltersContext.Provider>
   );
 };
 

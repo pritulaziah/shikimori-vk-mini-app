@@ -16,18 +16,22 @@ import {
   Icon24ExternalLinkOutline,
 } from "@vkontakte/icons";
 import { useQuery } from "react-query";
-import queryFn from "../utils/queryFn";
-import { Anime, AnimeKinds, AnimeStatuses } from "../types/anime";
-import { Manga } from "../types/manga";
-import shikimoriBaseUrl from "../constants/shikimoriBaseUrl";
-import useFilter from "../hooks/useFilter";
-import { animeStatuses, animeKinds } from "../constants/animeCollections";
-import { mangaStatuses, mangaKinds } from "../constants/mangaCollections";
-import useAdult from "../hooks/useAdult";
+import queryFn from "utils/queryFn";
+import { Anime, AnimeKinds, AnimeStatuses } from "types/anime";
+import { Manga } from "types/manga";
+import shikimoriBaseUrl from "constants/shikimoriBaseUrl";
+import useFilter from "hooks/useFilter";
+import { animeStatuses, animeKinds } from "constants/animeCollections";
+import { mangaStatuses, mangaKinds } from "constants/mangaCollections";
+import useAdult from "hooks/useAdult";
 
 // TODO: think about split anime and manga
 
 type Type = "mangas" | "animes";
+
+interface IProps {
+  type: Type;
+}
 
 const getStatusText = (
   type: Type,
@@ -72,10 +76,6 @@ const getScoreText = (score: Anime["score"] | Manga["score"]) =>
 
 const paramToString = (param: string[], defaultValue?: string | null) =>
   param.length > 0 ? param.join(",") : defaultValue;
-
-interface IProps {
-  type: Type;
-}
 
 const ViewCard = ({ type }: IProps) => {
   const { params } = useFilter();

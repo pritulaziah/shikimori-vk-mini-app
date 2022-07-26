@@ -1,8 +1,6 @@
 import { createContext } from "react";
+import { IAdultContext } from "types/adult";
 
-const AdultContext = createContext<{
-  adult: boolean;
-  onChangeAdult: () => void;
-}>({ adult: false, onChangeAdult: () => {} });
+const AdultContext = createContext<IAdultContext>({} as IAdultContext);
 
 export default AdultContext;

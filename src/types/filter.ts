@@ -6,7 +6,7 @@ export interface Params {
   score: string[];
 }
 
-export interface Filter {
+export interface IFilterContent {
   params: Params;
   onChangeParams: (paramName: keyof Params, paramValue: string[]) => void;
 }
@@ -14,5 +14,5 @@ export interface Filter {
 export interface FilterCollection {
   value: string;
   label: string;
-  adult?: boolean
+  adult?: boolean;
 }

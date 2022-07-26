@@ -1,21 +1,16 @@
-import {
-  Panel,
-  SplitLayout,
-  SplitCol,
-  Group,
-} from "@vkontakte/vkui";
-import FiltersProvider from "../providers/FiltersProvider";
-import ViewCard from "../components/ViewCard";
-import HeaderButtonBack from "../components/common/HeaderButtonBack";
-import { IPanel, Panels } from "../types/panel";
-import Filter from "../components/common/Filter";
-import GenreFilter from "../components/GenreFilter";
+import { Panel, SplitLayout, SplitCol, Group } from "@vkontakte/vkui";
+import FiltersProvider from "providers/FiltersProvider";
+import ViewCard from "components/ViewCard";
+import HeaderButtonBack from "components/common/HeaderButtonBack";
+import { IPanel, Panels } from "types/panel";
+import Filter from "components/common/Filter";
+import GenreFilter from "components/GenreFilter";
 import {
   animeStatuses,
   animeKinds,
   animeAgeRatings,
-} from "../constants/animeCollections";
-import scoreCollection from "../constants/scoreCollection";
+} from "constants/animeCollections";
+import scoreCollection from "constants/scoreCollection";
 
 const AnimePanel = ({ id, changePanel }: IPanel) => {
   return (
@@ -29,7 +24,7 @@ const AnimePanel = ({ id, changePanel }: IPanel) => {
       </HeaderButtonBack>
       <FiltersProvider>
         <SplitLayout style={{ justifyContent: "center" }}>
-          <SplitCol width={240} maxWidth={240} style={{ marginTop: '15px' }}>
+          <SplitCol width={240} maxWidth={240} style={{ marginTop: "15px" }}>
             <Panel>
               <Group>
                 <GenreFilter type="anime" />
@@ -42,7 +37,7 @@ const AnimePanel = ({ id, changePanel }: IPanel) => {
                 <Filter
                   title="Оценка"
                   paramName="score"
-                  multiple={false}
+                  isMulti={false}
                   collection={scoreCollection}
                 />
                 <Filter
@@ -58,7 +53,7 @@ const AnimePanel = ({ id, changePanel }: IPanel) => {
             width={"380px"}
             maxWidth={"380px"}
             fixed
-            style={{ marginTop: '15px' }}
+            style={{ marginTop: "15px" }}
           >
             <Panel>
               <ViewCard type="animes" />

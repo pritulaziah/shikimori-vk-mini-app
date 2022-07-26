@@ -1,5 +1,5 @@
 import { PanelHeader, Panel, Group, Cell } from "@vkontakte/vkui";
-import { IPanel, Panels } from "../types/panel";
+import { IPanel, Panels } from "types/panel";
 
 const HomePanel = ({ id, changePanel }: IPanel) => {
   return (

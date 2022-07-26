@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { Filter } from "../types/filter";
+import { IFilterContent } from "types/filter";
 
-const FiltersContext = createContext<Filter | null>(null);
+const FiltersContext = createContext<IFilterContent>({} as IFilterContent);
 
 export default FiltersContext;

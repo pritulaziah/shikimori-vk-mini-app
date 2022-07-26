@@ -1,5 +1,5 @@
 import { AnimeStatuses, AnimeKinds, AnimeAgeRatings } from "../types/anime";
-import { FilterCollection } from '../types/filter'
+import { FilterCollection } from "../types/filter";
 
 export const animeKinds: FilterCollection[] = [
   { value: AnimeKinds.TV, label: "TV Сериал" },

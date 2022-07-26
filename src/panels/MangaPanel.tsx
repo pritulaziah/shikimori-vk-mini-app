@@ -1,12 +1,12 @@
 import { Panel, SplitLayout, SplitCol, Group } from "@vkontakte/vkui";
-import FiltersProvider from "../providers/FiltersProvider";
-import ViewCard from "../components/ViewCard";
-import HeaderButtonBack from "../components/common/HeaderButtonBack";
-import { IPanel, Panels } from "../types/panel";
-import Filter from "../components/common/Filter";
-import GenreFilter from "../components/GenreFilter";
-import { mangaStatuses, mangaKinds } from "../constants/mangaCollections";
-import scoreCollection from "../constants/scoreCollection";
+import FiltersProvider from "providers/FiltersProvider";
+import ViewCard from "components/ViewCard";
+import HeaderButtonBack from "components/common/HeaderButtonBack";
+import { IPanel, Panels } from "types/panel";
+import Filter from "components/common/Filter";
+import GenreFilter from "components/GenreFilter";
+import { mangaStatuses, mangaKinds } from "constants/mangaCollections";
+import scoreCollection from "constants/scoreCollection";
 
 const MangaPanel = ({ id, changePanel }: IPanel) => {
   return (
@@ -32,7 +32,7 @@ const MangaPanel = ({ id, changePanel }: IPanel) => {
                 <Filter
                   title="Оценка"
                   paramName="score"
-                  multiple={false}
+                  isMulti={false}
                   collection={scoreCollection}
                 />
               </Group>

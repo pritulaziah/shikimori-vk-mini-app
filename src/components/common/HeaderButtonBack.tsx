@@ -1,7 +1,11 @@
-import { PanelHeader, PanelHeaderProps, PanelHeaderBack } from "@vkontakte/vkui";
+import {
+  PanelHeader,
+  PanelHeaderProps,
+  PanelHeaderBack,
+} from "@vkontakte/vkui";
 
 interface IProps extends PanelHeaderProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const HeaderButtonBack = ({ children, onClick, style }: IProps) => {

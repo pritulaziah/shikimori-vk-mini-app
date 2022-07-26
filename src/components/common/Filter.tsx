@@ -4,9 +4,9 @@ import {
   Icon28ChevronUpOutline,
   Icon28ChevronDownOutline,
 } from "@vkontakte/icons";
-import useFilter from "../../hooks/useFilter";
-import { Params, FilterCollection } from "../../types/filter";
-import useAdult from "../../hooks/useAdult";
+import useFilter from "hooks/useFilter";
+import { Params, FilterCollection } from "types/filter";
+import useAdult from "hooks/useAdult";
 
 interface IProps {
   paramName: keyof Params;
@@ -15,7 +15,7 @@ interface IProps {
   beforeSlot?: React.ReactNode;
   afterSlot?: React.ReactNode;
   expanded?: boolean;
-  multiple?: boolean;
+  isMulti?: boolean;
 }
 
 const Filter = ({
@@ -25,7 +25,7 @@ const Filter = ({
   beforeSlot,
   afterSlot,
   expanded: defaultExpanded = true,
-  multiple = true,
+  isMulti = true,
 }: IProps) => {
   const { adult } = useAdult();
   const [expanded, setExpanded] = useState(defaultExpanded);
@@ -42,7 +42,7 @@ const Filter = ({
       if (checked) {
         newState.delete(id);
       } else {
-        if (!multiple) {
+        if (!isMulti) {
           newState.clear();
         }
 
@@ -55,7 +55,7 @@ const Filter = ({
 
   useEffect(() => {
     onChangeParams(paramName, [...selected]);
-  }, [selected, paramName]);
+  }, [selected, paramName]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onChangeExpand = () => setExpanded((prevState) => !prevState);
 
@@ -87,7 +87,7 @@ const Filter = ({
           {beforeSlot}
           {collection
             .filter((collectionItem) =>
-              collectionItem.adult ? collectionItem.adult === adult : true
+              collectionItem.adult ? adult && collectionItem.adult : true
             )
             .map(({ value, label }) => (
               <Checkbox
